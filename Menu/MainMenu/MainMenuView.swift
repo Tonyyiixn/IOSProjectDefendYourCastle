@@ -48,7 +48,7 @@ struct MainMenuView: View {
     }
     
     func exitGame() {
-        // Handle exit logic (optional)
+        // Handle exit logic 
     }
 }
 
