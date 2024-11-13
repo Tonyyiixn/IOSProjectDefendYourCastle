@@ -6,10 +6,12 @@
 //
 
 import SpriteKit
+import AVFoundation
 
 class StartMenuScene: SKScene {
 
     override func didMove(to view: SKView) {
+        playBgAudio(fileNamed: "hbg.mp3")
         // Create and add the game title
         let gameTitle = SKLabelNode(text: "Defend Your Castle")
         gameTitle.fontSize = 60
@@ -63,5 +65,23 @@ class StartMenuScene: SKScene {
                 exit(0)
             }
         }
+    }
+}
+//For Background music and sound effects
+var backGroundAudio = AVAudioPlayer()
+func playBgAudio (fileNamed: String){
+    let url = Bundle.main.url(forResource: fileNamed, withExtension: nil)
+    guard let newURL = url else{
+        print ("Cannot find file called \(fileNamed)")
+        return
+    }
+    do {
+        backGroundAudio = try AVAudioPlayer(contentsOf: newURL)
+        backGroundAudio.numberOfLoops = -1
+        backGroundAudio.prepareToPlay()
+        backGroundAudio.play()
+    }
+    catch let error as NSError{
+        print(error.description)
     }
 }
