@@ -8,7 +8,8 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
-    let eneimes = SKSpriteNode(imageNamed: "placeholder")
+    var enemieslist = [SKSpriteNode]()
+    var currentenemy:SKSpriteNode?
     var enemeyspeed:CGFloat = 0.0
     override func didMove(to view: SKView) {
             //Add the pause button
@@ -29,14 +30,8 @@ class GameScene: SKScene {
             // Set background color to test visibility
             self.backgroundColor = .black
             
-            // Add the enemy sprite
-            eneimes.setScale(0.2) // Set default scale to ensure visibility
-            eneimes.position = CGPoint(x: self.size.width*0.2, y: self.size.height * 0.2)
-            // Adjust position
-            eneimes.zPosition = 2
-            eneimes.name = "enemy"
-            self.addChild(eneimes)
         
+        startSpawningEnemies()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -51,9 +46,8 @@ class GameScene: SKScene {
                 let transition = SKTransition.fade(withDuration: 1.0)
                 self.view?.presentScene(pauseScene,transition: transition)
             }else if nodeTouched.name == "enemy" {
-                eneimes.removeAllActions()
-            }else{
-                Enemymove()
+                currentenemy = nodeTouched as? SKSpriteNode
+                currentenemy?.removeAllActions()
             }
         }
     }
@@ -63,20 +57,57 @@ class GameScene: SKScene {
             let pointOfTouch = touch.location(in: self)
             let previousPointOfTouch = touch.previousLocation(in: self)
             
-            let amountDraggedX = pointOfTouch.x - previousPointOfTouch.x
-            let amountDraggedY = pointOfTouch.y - previousPointOfTouch.y
+            if let currentenemy = currentenemy {
+                let amountDraggedX = pointOfTouch.x - previousPointOfTouch.x
+                let amountDraggedY = pointOfTouch.y - previousPointOfTouch.y
+                
+                // Update enemy's position by adding the amount dragged to its current position
+                currentenemy.position.x += amountDraggedX
+                currentenemy.position.y += amountDraggedY
+            }
             
-            // Update enemy's position by adding the amount dragged to its current position
-            eneimes.position.x += amountDraggedX
-            eneimes.position.y += amountDraggedY
         }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let currentenemy = currentenemy {
+            let fallAction = SKAction.move(to: CGPoint(x:currentenemy.position.x,y:self.size.height * 0.4),duration: 1.5)
+            let moveAction = SKAction.moveTo(x: self.size.width*0.4, duration: 12)
+            let sequence = SKAction.sequence([fallAction,moveAction])
+            currentenemy.run(sequence)
+        }
         Enemymove()
     }
     func Enemymove(){
-        let enemymove = SKAction.moveTo(x: self.size.width*0.4, duration: 6.0)
-        eneimes.run(enemymove)
+    
+            let enemymove = SKAction.moveTo(x: self.size.width*0.4, duration: 12.0)
+            for enemy in enemieslist{
+                enemy.run(enemymove)
+            }
     }
+    
+    func spawnEnemy(){
+        let eneimes = SKSpriteNode(imageNamed: "placeholder")
+        let startPoint = CGPoint(x:self.size.width*0.1,y:self.size.height*0.4)
+                
+        // Add the enemy sprite
+        eneimes.setScale(0.2) // Set default scale to ensure visibility
+        eneimes.position = startPoint
+        // Adjust position
+        eneimes.zPosition = 2
+        eneimes.name = "enemy"
+        self.addChild(eneimes)
+        
+        enemieslist.append(eneimes)
+        
+        Enemymove()
+    }
+    
+    func startSpawningEnemies() {
+            let spawnAction = SKAction.run(spawnEnemy)
+            let waitAction = SKAction.wait(forDuration: 6.0, withRange: 0)
+            let sequence = SKAction.sequence([spawnAction, waitAction])
+            let repeatAction = SKAction.repeatForever(sequence)
+            self.run(repeatAction)
+        }
 }
