@@ -72,7 +72,7 @@ class GameScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let currentenemy = currentenemy {
             let fallAction = SKAction.move(to: CGPoint(x:currentenemy.position.x,y:self.size.height * 0.4),duration: 1.5)
-            let moveAction = SKAction.moveTo(x: self.size.width*0.4, duration: 12)
+            let moveAction = SKAction.moveTo(x: self.size.width * 0.35, duration: 12.0)
             let sequence = SKAction.sequence([fallAction,moveAction])
             currentenemy.run(sequence)
         }
@@ -80,7 +80,7 @@ class GameScene: SKScene {
     }
     func Enemymove(){
     
-            let enemymove = SKAction.moveTo(x: self.size.width*0.4, duration: 12.0)
+            let enemymove = SKAction.moveTo(x: self.size.width * 0.35, duration: 12.0)
             for enemy in enemieslist{
                 enemy.run(enemymove)
             }
@@ -102,7 +102,7 @@ class GameScene: SKScene {
         
         Enemymove()
     }
-    
+ 
     func startSpawningEnemies() {
             let spawnAction = SKAction.run(spawnEnemy)
             let waitAction = SKAction.wait(forDuration: 6.0, withRange: 0)
