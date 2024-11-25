@@ -33,6 +33,7 @@ class GameScene: SKScene {
             
         
         startSpawningEnemies()
+        addBuildingToScene(imageName: "Fortress Square")
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -112,5 +113,13 @@ class GameScene: SKScene {
             let sequence = SKAction.sequence([spawnAction, waitAction])
             let repeatAction = SKAction.repeatForever(sequence)
             self.run(repeatAction)
+        }
+    
+    func addBuildingToScene(imageName: String) {
+            let building = SKSpriteNode(imageNamed: imageName)
+        building.position = CGPoint(x: self.size.width * 0.5, y: self.size.height * 0.4)
+            building.setScale(0.4)
+            building.zPosition = 1
+            self.addChild(building)
         }
 }

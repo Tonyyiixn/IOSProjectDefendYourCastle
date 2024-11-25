@@ -57,7 +57,10 @@ class PauseMenuScene: SKScene {
                 let transition = SKTransition.fade(withDuration: 1.0)
                 self.view?.presentScene(gameScene, transition: transition)
             }else if nodeTouched.name == "upgradesystem"{
-                
+                let upgradeScene = UpgradeMenuScene(size: self.size)
+                upgradeScene.scaleMode = .aspectFill
+                let transition = SKTransition.fade(withDuration: 1.0)
+                self.view?.presentScene(upgradeScene, transition: transition)
             }
             else if nodeTouched.name == "Back" {
                 let BackScene = StartMenuScene(size: self.size)
