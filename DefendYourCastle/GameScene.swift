@@ -17,11 +17,12 @@ class GameScene: SKScene {
         pausebutton.setScale(1)
         pausebutton.position = CGPoint(x: self.size.width*0.1, y: self.size.height * 0.9)
         pausebutton.name = "pauseGame"
+        pausebutton.fontColor = .black
         pausebutton.zPosition = 1
         self.addChild(pausebutton)
         
             // Add the background
-            let background = SKSpriteNode(imageNamed: "land")
+            let background = SKSpriteNode(imageNamed: "Background")
             background.size = self.size
         background.position = CGPoint(x: self.size.width / 2, y: self.size.height/2)
             background.zPosition = 0
@@ -72,7 +73,7 @@ class GameScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let currentenemy = currentenemy {
             let fallAction = SKAction.move(to: CGPoint(x:currentenemy.position.x,y:self.size.height * 0.4),duration: 1.5)
-            let targetX = currentenemy.position.x < self.size.width * 0.5 ? self.size.width * 0.30 : self.size.width * 0.6
+            let targetX = currentenemy.position.x < self.size.width * 0.5 ? self.size.width * 0.40 : self.size.width * 0.6
             let moveAction = SKAction.moveTo(x: targetX, duration: 12.0)
             let sequence = SKAction.sequence([fallAction,moveAction])
             currentenemy.run(sequence)
@@ -80,7 +81,7 @@ class GameScene: SKScene {
         //Enemymove()
     }
     func Enemymove(){
-            let enemymoveleft = SKAction.moveTo(x: self.size.width * 0.30, duration: 12.0)
+            let enemymoveleft = SKAction.moveTo(x: self.size.width * 0.40, duration: 12.0)
             let enemymoveright = SKAction.moveTo(x: self.size.width*0.60, duration: 12.0)
             for enemy in enemieslist{
                 let enemymove = enemy.position.x < self.size.width * 0.5 ? enemymoveleft : enemymoveright
