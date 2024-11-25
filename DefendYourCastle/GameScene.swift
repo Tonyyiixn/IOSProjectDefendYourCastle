@@ -72,27 +72,29 @@ class GameScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let currentenemy = currentenemy {
             let fallAction = SKAction.move(to: CGPoint(x:currentenemy.position.x,y:self.size.height * 0.4),duration: 1.5)
-            let moveAction = SKAction.moveTo(x: self.size.width * 0.35, duration: 12.0)
+            let targetX = currentenemy.position.x < self.size.width * 0.5 ? self.size.width * 0.30 : self.size.width * 0.6
+            let moveAction = SKAction.moveTo(x: targetX, duration: 12.0)
             let sequence = SKAction.sequence([fallAction,moveAction])
             currentenemy.run(sequence)
         }
-        Enemymove()
+        //Enemymove()
     }
     func Enemymove(){
-    
-            let enemymove = SKAction.moveTo(x: self.size.width * 0.35, duration: 12.0)
+            let enemymoveleft = SKAction.moveTo(x: self.size.width * 0.30, duration: 12.0)
+            let enemymoveright = SKAction.moveTo(x: self.size.width*0.60, duration: 12.0)
             for enemy in enemieslist{
+                let enemymove = enemy.position.x < self.size.width * 0.5 ? enemymoveleft : enemymoveright
                 enemy.run(enemymove)
             }
     }
     
     func spawnEnemy(){
         let eneimes = SKSpriteNode(imageNamed: "placeholder")
-        let startPoint = CGPoint(x:self.size.width*0.1,y:self.size.height*0.4)
-                
+        let startPointLeft = CGPoint(x:self.size.width*0.1,y:self.size.height*0.4)
+        let startPointRight = CGPoint(x:self.size.width*0.9,y:self.size.height*0.4)
         // Add the enemy sprite
         eneimes.setScale(0.2) // Set default scale to ensure visibility
-        eneimes.position = startPoint
+        eneimes.position = Int.random(in: 1...2) == 1 ? startPointLeft : startPointRight
         // Adjust position
         eneimes.zPosition = 2
         eneimes.name = "enemy"
