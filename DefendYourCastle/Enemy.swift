@@ -1,17 +1,18 @@
 // Custom enemy classes
 // by Jian Hong Mei 11/26/24
 
-// Custom enemy classes
-// by Jian Hong Mei 11/26/24
+import SpriteKit
 
-class Enemy: SKSpriteNode, NSCoding{
+class Enemy: SKSpriteNode{
     var maxHealth: Int
     var currentHealth: Int
     var attackDamage: Int
     var attackCooldown: TimeInterval
+    var imageName: String
 
     init(
         texture: SKTexture?,
+        imageName: String = "placeholder", // default image name
         name: String = "enemy",
         maxHealth: Int,
         attackDamage: Int,
@@ -23,6 +24,7 @@ class Enemy: SKSpriteNode, NSCoding{
         self.currentHealth = maxHealth
         self.attackDamage = attackDamage
         self.attackCooldown = attackCooldown
+        self.imageName = imageName
         super.init(texture: texture, color: .clear, size: texture?.size() ?? CGSize(width: 50, height: 50))
         self.position = position
         self.name = name
@@ -30,12 +32,14 @@ class Enemy: SKSpriteNode, NSCoding{
         self.setScale(scale)
     }
 
-    // NSCoder initializer
+    // NSCoder - load system
     required init?(coder aDecoder: NSCoder){
-        guard 
+        guard
             let name = aDecoder.decodeObject(forKey: "name") as? String,
-            let textureName = aDecoder.decodeObject(forKey: "textureName") as? String,
-            let texture = SKTexture(imageNamed: textureName) else {return nil}
+            let imageName = aDecoder.decodeObject(forKey: "imageName") as? String
+        else {return nil}
+        
+        let texture = SKTexture(imageNamed: imageName) // Create the texture from the image name
         let maxHealth = aDecoder.decodeInteger(forKey: "maxHealth")
         let attackDamage = aDecoder.decodeInteger(forKey: "attackDamage")
         let attackCooldown = aDecoder.decodeDouble(forKey: "attackCooldown")
@@ -47,21 +51,22 @@ class Enemy: SKSpriteNode, NSCoding{
         self.currentHealth = maxHealth
         self.attackDamage = attackDamage
         self.attackCooldown = attackCooldown
+        self.imageName = imageName
         super.init(texture: texture, color: .clear, size: texture.size())
         self.name = name
         self.position = CGPoint(x: positionX, y: positionY)
         self.setScale(CGFloat(scale))
     }
 
-    // Encode to save system
-    func encode(with aCoder: NSCoder){
+    // save system
+    override func encode(with aCoder: NSCoder){
         aCoder.encode(name, forKey: "name")
+        aCoder.encode(imageName, forKey: "imageName")
         aCoder.encode(maxHealth, forKey: "maxHealth")
         aCoder.encode(attackDamage, forKey: "attackDamage")
         aCoder.encode(attackCooldown, forKey: "attackCooldown")
         aCoder.encode(position.x, forKey: "positionX")
         aCoder.encode(position.y, forKey: "positionY")
-        aCoder.encode(scale, forKey: "scale")
-        aCoder.encode(texture?.name, forKey: "textureName")
+        aCoder.encode(self.xScale, forKey: "scale")
     }
 }
