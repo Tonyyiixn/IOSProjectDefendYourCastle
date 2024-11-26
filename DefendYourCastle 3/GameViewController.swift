@@ -10,7 +10,8 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-
+    var gameScene: GameScene?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,12 +27,31 @@ class GameViewController: UIViewController {
             
             
             view.ignoresSiblingOrder = true
-            
             view.showsFPS = true
             view.showsNodeCount = true
         }
     }
 
+    func presentUpgradeMenuScene() {
+        if let view = self.view as! SKView? {
+            let landscapeSize = CGSize(width: 852, height: 393)
+            let upgradeMenuScene = UpgradeMenuScene(size: landscapeSize)
+            upgradeMenuScene.scaleMode = .aspectFill
+            view.presentScene(upgradeMenuScene)
+            let currentScene = upgradeMenuScene
+        }
+    }
+    
+    func presentGameScene() {
+        if let view = self.view as! SKView? {
+            let landscapeSize = CGSize(width: 852, height: 393)
+            let gameScene = GameScene(size: landscapeSize)
+            gameScene.scaleMode = .aspectFill
+            view.presentScene(gameScene)
+            let currentScene = gameScene
+        }
+    }
+    
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return .allButUpsideDown

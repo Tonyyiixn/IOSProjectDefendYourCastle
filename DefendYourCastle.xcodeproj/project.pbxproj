@@ -30,9 +30,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		7909F3DC2CBAD2DB003AB2BE /* DefendYourCastle */ = {
+		4B0DEFF32CF63FB00019E792 /* DefendYourCastle 3 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = DefendYourCastle;
+			path = "DefendYourCastle 3";
 			sourceTree = "<group>";
 		};
 		7909F3F62CBAD2DC003AB2BE /* DefendYourCastleTests */ = {
@@ -75,7 +75,7 @@
 		7909F3D12CBAD2DB003AB2BE = {
 			isa = PBXGroup;
 			children = (
-				7909F3DC2CBAD2DB003AB2BE /* DefendYourCastle */,
+				4B0DEFF32CF63FB00019E792 /* DefendYourCastle 3 */,
 				7909F3F62CBAD2DC003AB2BE /* DefendYourCastleTests */,
 				7909F4002CBAD2DC003AB2BE /* DefendYourCastleUITests */,
 				7909F3DB2CBAD2DB003AB2BE /* Products */,
@@ -107,9 +107,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				7909F3DC2CBAD2DB003AB2BE /* DefendYourCastle */,
-			);
 			name = DefendYourCastle;
 			packageProductDependencies = (
 			);
@@ -131,6 +128,7 @@
 				7909F3F52CBAD2DC003AB2BE /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				4B0DEFF32CF63FB00019E792 /* DefendYourCastle 3 */,
 				7909F3F62CBAD2DC003AB2BE /* DefendYourCastleTests */,
 			);
 			name = DefendYourCastleTests;
