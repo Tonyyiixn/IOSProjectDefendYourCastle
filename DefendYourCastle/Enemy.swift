@@ -32,6 +32,23 @@ class Enemy: SKSpriteNode{
         self.setScale(scale)
     }
 
+    // Take damage function
+    func takeDamage(_ damage: Int){
+        // Reduce current health by damage amount
+        currentHealth -= damage
+            
+        // handle death (e.g., remove from scene or trigger death animation)
+        if currentHealth < 0{
+            handleDeath()
+        }
+    }
+
+    // Handle the enemy's death
+    func handleDeath(){
+        // To be implemented - handling enemy death (removing from scene, playing death animation, etc.)
+        self.removeFromParent() // Removes the enemy from the scene
+    }
+    
     // NSCoder - load system
     required init?(coder aDecoder: NSCoder){
         guard
@@ -40,15 +57,16 @@ class Enemy: SKSpriteNode{
         else {return nil}
         
         let texture = SKTexture(imageNamed: imageName) // Create the texture from the image name
+        
         let maxHealth = aDecoder.decodeInteger(forKey: "maxHealth")
         let attackDamage = aDecoder.decodeInteger(forKey: "attackDamage")
         let attackCooldown = aDecoder.decodeDouble(forKey: "attackCooldown")
         let positionX = aDecoder.decodeDouble(forKey: "positionX")
         let positionY = aDecoder.decodeDouble(forKey: "positionY")
         let scale = aDecoder.decodeDouble(forKey: "scale")
-
+        let currentHealth = aDecoder.decodeInteger(forKey: "currentHealth")
         self.maxHealth = maxHealth
-        self.currentHealth = maxHealth
+        self.currentHealth = currentHealth
         self.attackDamage = attackDamage
         self.attackCooldown = attackCooldown
         self.imageName = imageName
@@ -62,6 +80,7 @@ class Enemy: SKSpriteNode{
     override func encode(with aCoder: NSCoder){
         aCoder.encode(name, forKey: "name")
         aCoder.encode(imageName, forKey: "imageName")
+        aCoder.encode(currentHealth, forKey: "currentHealth")
         aCoder.encode(maxHealth, forKey: "maxHealth")
         aCoder.encode(attackDamage, forKey: "attackDamage")
         aCoder.encode(attackCooldown, forKey: "attackCooldown")
