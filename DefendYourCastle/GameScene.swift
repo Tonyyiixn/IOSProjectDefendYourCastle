@@ -8,10 +8,14 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
+    var gameIsPaused = false
+    static var currentGameScene: GameScene?
     var enemieslist = [SKSpriteNode]()
     var currentenemy:SKSpriteNode?
     var enemeyspeed:CGFloat = 0.0
     override func didMove(to view: SKView) {
+        GameScene.currentGameScene = self
+        NotificationCenter.default.addObserver(self, selector: #selector(handleResumeGame), name: NSNotification.Name("ResumeGame"), object: nil)
             //Add the pause button
         let pausebutton = SKLabelNode(text: "pause")
         pausebutton.setScale(1)
@@ -42,16 +46,22 @@ class GameScene: SKScene {
             let nodeTouched = self.atPoint(location)
             
             if nodeTouched.name == "pauseGame" {
+                gameIsPaused = true
                 let pauseScene = PauseMenuScene(size:self.size)
                 pauseScene.scaleMode = .aspectFill
-                
                 let transition = SKTransition.fade(withDuration: 1.0)
                 self.view?.presentScene(pauseScene,transition: transition)
             }else if nodeTouched.name == "enemy" {
-                currentenemy = nodeTouched as? SKSpriteNode
-                currentenemy?.removeAllActions()
+                if !gameIsPaused {
+                    currentenemy = nodeTouched as? SKSpriteNode
+                    currentenemy?.removeAllActions()
+                }
             }
         }
+    }
+    
+    @objc func handleResumeGame() {
+        gameIsPaused = false
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -78,9 +88,26 @@ class GameScene: SKScene {
             let moveAction = SKAction.moveTo(x: targetX, duration: 12.0)
             let sequence = SKAction.sequence([fallAction,moveAction])
             currentenemy.run(sequence)
+            
+            //Enemymove()
         }
-        //Enemymove()
+        currentenemy = nil
     }
+    
+    override func update(_ currentTime: TimeInterval) {
+        if gameIsPaused {
+                    // Prevent all actions from progressing while the game is paused
+                    for enemy in enemieslist {
+                        enemy.removeAllActions()
+                    }
+                    return
+                }
+                
+                if currentenemy == nil {
+                    Enemymove()
+                }
+    }
+    
     func Enemymove(){
             let enemymoveleft = SKAction.moveTo(x: self.size.width * 0.40, duration: 12.0)
             let enemymoveright = SKAction.moveTo(x: self.size.width*0.60, duration: 12.0)
@@ -91,6 +118,7 @@ class GameScene: SKScene {
     }
     
     func spawnEnemy(){
+        if gameIsPaused { return }
         let eneimes = SKSpriteNode(imageNamed: "placeholder")
         let startPointLeft = CGPoint(x:self.size.width*0.1,y:self.size.height*0.4)
         let startPointRight = CGPoint(x:self.size.width*0.9,y:self.size.height*0.4)
@@ -104,7 +132,7 @@ class GameScene: SKScene {
         
         enemieslist.append(eneimes)
         
-        Enemymove()
+        //Enemymove()
     }
  
     func startSpawningEnemies() {

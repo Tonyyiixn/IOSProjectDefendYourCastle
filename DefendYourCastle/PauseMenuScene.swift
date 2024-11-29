@@ -14,9 +14,18 @@ class PauseMenuScene: SKScene {
         let gameTitle = SKLabelNode(text: "Paused")
         gameTitle.fontSize = 60
         gameTitle.fontColor = .red
-        gameTitle.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.75)
+        gameTitle.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.85)
         gameTitle.zPosition = 1
         self.addChild(gameTitle)
+        
+        // Create and add the continue button
+        let continueButton = SKLabelNode(text: "Continue")
+        continueButton.fontSize = 45
+        continueButton.fontColor = .white
+        continueButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.7)
+        continueButton.name = "continue"
+        continueButton.zPosition = 1
+        self.addChild(continueButton)
         
         // Create and add the start button
         let restartButton = SKLabelNode(text: "Restart")
@@ -67,7 +76,12 @@ class PauseMenuScene: SKScene {
                 BackScene.scaleMode = .aspectFill
                 let transition = SKTransition.fade(withDuration: 1.0)
                 self.view?.presentScene(BackScene, transition: transition)
-
+            }else if nodeTouched.name == "continue" {
+                NotificationCenter.default.post(name: NSNotification.Name("ResumeGame"), object: nil)
+                if let gameScene = GameScene.currentGameScene {
+                    let transition = SKTransition.reveal(with: .up, duration: 1.0)
+                    self.view?.presentScene(gameScene, transition: transition)
+                }
             }
         }
     }
