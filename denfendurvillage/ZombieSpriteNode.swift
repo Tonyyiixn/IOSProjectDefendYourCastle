@@ -5,6 +5,7 @@ class ZombieSpriteNode: SKSpriteNode {
     var walkingFrames: [SKTexture] = []
     var attackFrames: [SKTexture] = []
     var deathFrames: [SKTexture] = []
+    var stumbleFrames: [SKTexture] = []
     var fallingFrames: [SKTexture] = []
     var transitionFrames: [SKTexture] = []
 
@@ -33,7 +34,10 @@ class ZombieSpriteNode: SKSpriteNode {
         deathFrames = (1...16).map { SKTexture(imageNamed: "death\($0)") }
         
         // Falling frames
-        fallingFrames = (1...22).map { SKTexture(imageNamed: "falling\($0)") }
+        fallingFrames = (1...2).map { SKTexture(imageNamed: "falling\($0)") }
+        
+        //Stumble frames
+        stumbleFrames = (4...22).map { SKTexture(imageNamed: "falling\($0)") }
         
         // Transition frames
         transitionFrames = (1...5).map { SKTexture(imageNamed: "transition\($0)") }
@@ -67,7 +71,13 @@ extension ZombieSpriteNode {
         let fallingAnimation = SKAction.animate(with: fallingFrames, timePerFrame: 0.1)
         self.run(fallingAnimation)
     }
-
+    
+    // Play the stumble animation
+    func startStumbleAnimation() {
+        let stubmbleAnimation = SKAction.animate(with: stumbleFrames, timePerFrame: 0.3)
+        self.run(stubmbleAnimation)
+    }
+    
     // Play the transition animation
     func startTransitionAnimation() {
         let transitionAnimation = SKAction.animate(with: transitionFrames, timePerFrame: 0.1)
