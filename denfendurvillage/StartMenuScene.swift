@@ -65,21 +65,21 @@ class StartMenuScene: SKScene {
             let nodeTouched = self.atPoint(location)
             
             if nodeTouched.name == "startButton" {
-//                gameViewController?.presentGameScene()
-                let gameScene = GameScene(size: self.size)
-                gameScene.scaleMode = .aspectFill
+                // Transition to LevelScene
+                let levelScene = LevelScene(size: self.size)
+                levelScene.levelNumber = 1 // Start at Level 1
+                levelScene.scaleMode = .aspectFill
                 let transition = SKTransition.fade(withDuration: 1.0)
-                self.view?.presentScene(gameScene, transition: transition)
-            }else if nodeTouched.name == "settingsButton"{
-                
-            }else if nodeTouched.name == "upgradesystem"{
-//                gameViewController?.presentUpgradeMenuScene()
+                self.view?.presentScene(levelScene, transition: transition)
+            } else if nodeTouched.name == "settingsButton" {
+                // Handle settings button tap (add logic here)
+            } else if nodeTouched.name == "upgradesystem" {
+                // Transition to UpgradeMenuScene
                 let upgradeScene = UpgradeMenuScene(size: self.size)
                 upgradeScene.scaleMode = .aspectFill
                 let transition = SKTransition.fade(withDuration: 1.0)
                 self.view?.presentScene(upgradeScene, transition: transition)
-            }
-            else if nodeTouched.name == "exitButton" {
+            } else if nodeTouched.name == "exitButton" {
                 exit(0)
             }
         }
