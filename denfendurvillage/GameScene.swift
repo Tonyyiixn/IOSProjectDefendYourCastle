@@ -41,13 +41,13 @@ class GameScene: SKScene {
         self.addChild(scoreLabel)
 
         //Health bar background
-        healthBarBackground = SKSpriteNode(color: .darkGray, size: CGSize(width:self.size.width*0.4,height:20))
+        healthBarBackground = SKSpriteNode(color: .darkGray, size: CGSize(width:self.size.width*0.4,height:30))
         healthBarBackground.position = CGPoint(x: self.size.width*0.5, y: self.size.height*0.7)
         healthBarBackground.zPosition = 1
         self.addChild(healthBarBackground)
         
         //Health bar background
-        healthBarForeground = SKSpriteNode(color: .green, size: CGSize(width:self.size.width*0.4,height:20))
+        healthBarForeground = SKSpriteNode(color: .red, size: CGSize(width:self.size.width*0.4,height:30))
         healthBarForeground.anchorPoint = CGPoint(x: 0, y: 0.5)
         healthBarForeground.position = CGPoint(x: healthBarBackground.position.x - healthBarBackground.size.width / 2, y: healthBarBackground.position.y)
         healthBarForeground.zPosition = 2
