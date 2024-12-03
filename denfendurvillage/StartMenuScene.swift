@@ -15,7 +15,7 @@ class StartMenuScene: SKScene {
         playBgAudio(fileNamed: "hbg.mp3")
         // Create and add the game title
         let gameTitle = SKLabelNode(text: "Defend Your Castle")
-        gameTitle.fontSize = 60
+        gameTitle.fontSize = 70
         gameTitle.fontColor = .yellow
         gameTitle.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.80)
         gameTitle.zPosition = 1
