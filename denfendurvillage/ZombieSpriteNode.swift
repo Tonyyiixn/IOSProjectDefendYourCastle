@@ -1,6 +1,9 @@
 import SpriteKit
 
 class ZombieSpriteNode: SKSpriteNode {
+    //Attack and health
+    var hitpoints:CGFloat = 1.0;
+    var attackPoints:CGFloat = 0.05;
     // Animation frames
     var walkingFrames: [SKTexture] = []
     var attackFrames: [SKTexture] = []
@@ -74,7 +77,7 @@ extension ZombieSpriteNode {
     
     // Play the stumble animation
     func startStumbleAnimation() {
-        let stubmbleAnimation = SKAction.animate(with: stumbleFrames, timePerFrame: 0.3)
+        let stubmbleAnimation = SKAction.animate(with: stumbleFrames, timePerFrame: 0.1)
         self.run(stubmbleAnimation)
     }
     

@@ -13,7 +13,12 @@ class GameScene: SKScene {
     var enemieslist = [ZombieSpriteNode]()
     var currentenemy:ZombieSpriteNode?
     var enemeyspeed:CGFloat = 0.0
-   
+    var castleHealth:CGFloat = 1.0 // Castle Health are set to 100%, castle health will double each times when the level upgrades
+    var healthBarBackground:SKSpriteNode!
+    var healthBarForeground:SKSpriteNode!
+    var scoreLabel:SKLabelNode!
+    var score: Int = 0
+    var goal: Int = 10
     override func didMove(to view: SKView) {
         GameScene.currentGameScene = self
         NotificationCenter.default.addObserver(self, selector: #selector(handleResumeGame), name: NSNotification.Name("ResumeGame"), object: nil)
@@ -25,6 +30,28 @@ class GameScene: SKScene {
         pausebutton.fontColor = .black
         pausebutton.zPosition = 1
         self.addChild(pausebutton)
+        
+        //Add the score to win
+        scoreLabel = SKLabelNode(text: "score:\(score)")
+        scoreLabel.setScale(1)
+        scoreLabel.position = CGPoint(x: self.size.width*0.7, y: self.size.height * 0.9)
+        scoreLabel.name = "pauseGame"
+        scoreLabel.fontColor = .black
+        scoreLabel.zPosition = 1
+        self.addChild(scoreLabel)
+
+        //Health bar background
+        healthBarBackground = SKSpriteNode(color: .darkGray, size: CGSize(width:self.size.width*0.4,height:20))
+        healthBarBackground.position = CGPoint(x: self.size.width*0.5, y: self.size.height*0.7)
+        healthBarBackground.zPosition = 1
+        self.addChild(healthBarBackground)
+        
+        //Health bar background
+        healthBarForeground = SKSpriteNode(color: .green, size: CGSize(width:self.size.width*0.4,height:20))
+        healthBarForeground.anchorPoint = CGPoint(x: 0, y: 0.5)
+        healthBarForeground.position = CGPoint(x: healthBarBackground.position.x - healthBarBackground.size.width / 2, y: healthBarBackground.position.y)
+        healthBarForeground.zPosition = 2
+        self.addChild(healthBarForeground)
         
             // Add the background
             let background = SKSpriteNode(imageNamed: "Background")
@@ -90,7 +117,7 @@ class GameScene: SKScene {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let currentenemy = currentenemy {
-            // Start the falling animation
+                // Start the falling animation
                  currentenemy.startFallingAnimation()
                  
                  // Fall action: Move the enemy to the ground level
@@ -99,10 +126,13 @@ class GameScene: SKScene {
                  // After falling is done, play the stumble animation
                  let stumbleAction = SKAction.run {
                      currentenemy.startStumbleAnimation()
+                     self.dealDamageToZombie(zombie: currentenemy, damage: 0.5)
                  }
-                 
+            
+            
+                             
                  // Combine fall and stumble actions into a sequence
-                 let sequence = SKAction.sequence([fallAction, stumbleAction])
+            let sequence = SKAction.sequence([fallAction, stumbleAction])
                  
                  // Run the sequence (falling first, then stumbling)
                  currentenemy.run(sequence)
@@ -117,6 +147,7 @@ class GameScene: SKScene {
                     for enemy in enemieslist {
                         enemy.removeAllActions()
                     }
+            scoreLabel.text = ""
                     return
                 }
                 
@@ -144,6 +175,7 @@ class GameScene: SKScene {
             
             if abs(enemy.position.x - targetX) < 2 {
                             enemy.startAttackAnimation() // Start attack animation once the enemy reaches the target
+                            dealDamageToCastle(damage: enemy.attackPoints)
                     }
         }
     }
@@ -204,7 +236,57 @@ class GameScene: SKScene {
             self.addChild(building)
         }
    
+    func transitionToNextLevel(levelNumber: Int) {
+        //addBuildingToScene(imageName: "Fortress Square Full")
+        // Create a new instance of LevelScene and pass the next level number
+        let nextLevelScene = LevelScene(size: self.size)
+        nextLevelScene.levelNumber = levelNumber + 1 // Increment the level number for the next scene
+        nextLevelScene.scaleMode = .aspectFill
+        self.view?.presentScene(nextLevelScene, transition: SKTransition.fade(withDuration: 1.0))
+        //every time the level rise, the speed of enimes and hitpoints would increase.
+        //speed += 0.1
+        //also, the castle would have more armor.
+        //castleHealth *= 1.5
+        //updateCastleHealthBar()
+    }
+    
+    func checkAndTransitionToNextLevel() {
+        if score >= goal {
+            // Transition to the next level scene
+            transitionToNextLevel(levelNumber: 1)
+        }
+    }
+    
+    func updateCastleHealthBar() {
+        let healthPercentage = castleHealth
+        healthBarForeground.size.width = CGFloat(healthPercentage) * healthBarBackground.size.width
+    }
 
-
+    func dealDamageToZombie(zombie: ZombieSpriteNode, damage: CGFloat) {
+        zombie.hitpoints -= damage
+        if zombie.hitpoints <= 0 {
+            zombie.startDeathAnimation()
+            zombie.removeFromParent()
+            score += 1
+            scoreLabel.text = "score:\(score)"
+            if let index = enemieslist.firstIndex(of: zombie) {
+                enemieslist.remove(at: index)
+            }
+            checkAndTransitionToNextLevel()
+        }
+    }
+    
+    func dealDamageToCastle(damage: CGFloat) {
+        castleHealth -= damage
+        if castleHealth <= 0 {
+            transitionToGameOver()
+        }
+        updateCastleHealthBar()
+    }
+    
+    func transitionToGameOver() {
+        let gameOverScene = GameOverScene(size: size)
+        view?.presentScene(gameOverScene)
+    }
 }
 
