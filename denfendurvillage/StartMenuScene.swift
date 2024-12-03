@@ -40,23 +40,32 @@ class StartMenuScene: SKScene {
         self.addChild(upgradeButton)
         
         // Create and add the settings button
-        let settingsButton = SKLabelNode(text: "Settings")
-        settingsButton.fontSize = 45
-        settingsButton.fontColor = .white
-        settingsButton.position = CGPoint(x: self.size.width / 2, y: self.size.height*0.20)
-        settingsButton.name = "settingsButton"
-        settingsButton.zPosition = 1
-        self.addChild(settingsButton)
+//        let settingsButton = SKLabelNode(text: "Settings")
+//        settingsButton.fontSize = 45
+//        settingsButton.fontColor = .white
+//        settingsButton.position = CGPoint(x: self.size.width / 2, y: self.size.height*0.20)
+//        settingsButton.name = "settingsButton"
+//        settingsButton.zPosition = 1
+//        self.addChild(settingsButton)
         
         
         // Create and add the exit button
         let exitButton = SKLabelNode(text: "Exit")
         exitButton.fontSize = 45
         exitButton.fontColor = .white
-        exitButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0)
+        exitButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.2)
         exitButton.name = "exitButton"
         exitButton.zPosition = 1
         self.addChild(exitButton)
+        
+        // Create and add the audio button
+        let audioButton = SKLabelNode(text: "Audio")
+        audioButton.fontSize = 30
+        audioButton.fontColor = .white
+        audioButton.position = CGPoint(x: self.size.width * 0.1, y: self.size.height * 0)
+        audioButton.name = "audioButton"
+        audioButton.zPosition = 1
+        self.addChild(audioButton)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -70,8 +79,8 @@ class StartMenuScene: SKScene {
                 gameScene.scaleMode = .aspectFill
                 let transition = SKTransition.fade(withDuration: 1.0)
                 self.view?.presentScene(gameScene, transition: transition)
-            }else if nodeTouched.name == "settingsButton"{
-                
+            }else if nodeTouched.name == "audioButton"{
+                backGroundAudio.stop()
             }else if nodeTouched.name == "upgradesystem"{
 //                gameViewController?.presentUpgradeMenuScene()
                 let upgradeScene = UpgradeMenuScene(size: self.size)
