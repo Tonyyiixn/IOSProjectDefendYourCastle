@@ -9,8 +9,9 @@
 import SpriteKit
 
 class LevelScene: SKScene {
-    var levelNumber: Int = 1 // The current level number
-
+    var levelNumber: Int = 1 
+    var currentPoints: Int = 0
+    
     override func didMove(to view: SKView) {
         // Set up the background
         self.backgroundColor = .black
@@ -39,9 +40,11 @@ class LevelScene: SKScene {
     }
 
     func startGameScene() {
-        // Transition to GameScene
         let gameScene = GameScene(size: self.size)
-      //  gameScene.levelNumber = levelNumber // Pass the level number to GameScene
+        gameScene.levelNumber = levelNumber
+        gameScene.goal = 5 + (levelNumber - 1) * 5
+        gameScene.spawnInterval = max(1.0, 3.0 - Double(levelNumber - 1) * 0.5)
+        gameScene.points = currentPoints
         gameScene.scaleMode = .aspectFill
         self.view?.presentScene(gameScene, transition: SKTransition.fade(withDuration: 1.0))
     }
