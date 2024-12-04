@@ -16,11 +16,18 @@ class UpgradeMenuScene: SKScene {
         if let viewController = view.window?.rootViewController as? GameViewController {
                     gameViewController = viewController
                 }
+        
+        // Calculate even spacing
+        let topMargin: CGFloat = 0.85  // Title position
+        let bottomMargin: CGFloat = 0.15  // Space from bottom
+        let numberOfButtons: CGFloat = 6  // Total number of buttons including title
+        let spacing = (topMargin - bottomMargin) / (numberOfButtons - 1)
+        
         // Create and add the game title
         let gameTitle = SKLabelNode(text: "Upgrade System")
         gameTitle.fontSize = 60
         gameTitle.fontColor = .yellow
-        gameTitle.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.80)
+        gameTitle.position = CGPoint(x: self.size.width / 2, y: self.size.height * topMargin)
         gameTitle.zPosition = 1
         self.addChild(gameTitle)
         
@@ -28,44 +35,43 @@ class UpgradeMenuScene: SKScene {
         let resumeButton = SKLabelNode(text: "Resume Game")
         resumeButton.fontSize = 45
         resumeButton.fontColor = .white
-        resumeButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.70)
+        resumeButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * (topMargin - spacing))
         resumeButton.name = "resume"
         resumeButton.zPosition = 1
         self.addChild(resumeButton)
         
-        // Create and add the start button
+        // Create and add the square button
         let startButton = SKLabelNode(text: "Add Square")
         startButton.fontSize = 45
         startButton.fontColor = .white
-        startButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.60)
+        startButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * (topMargin - spacing * 2))
         startButton.name = "Square"
         startButton.zPosition = 1
         self.addChild(startButton)
         
-        // Create and add the upgrade button
-        let upgradeButton = SKLabelNode(text: "Add Back towers")
+        // Create and add the back towers button
+        let upgradeButton = SKLabelNode(text: "Add Back Towers")
         upgradeButton.fontSize = 45
         upgradeButton.fontColor = .white
-        upgradeButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.40)
+        upgradeButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * (topMargin - spacing * 3))
         upgradeButton.name = "Backtowers"
         upgradeButton.zPosition = 1
         self.addChild(upgradeButton)
         
-        // Create and add the settings button
-        let settingsButton = SKLabelNode(text: "build front towers")
+        // Create and add the front towers button
+        let settingsButton = SKLabelNode(text: "Build Front Towers")
         settingsButton.fontSize = 45
         settingsButton.fontColor = .white
-        settingsButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.20)
+        settingsButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * (topMargin - spacing * 4))
         settingsButton.name = "Fronttowers"
         settingsButton.zPosition = 1
         self.addChild(settingsButton)
-        
         
         // Create and add the exit button
         let exitButton = SKLabelNode(text: "Back To Main Menu")
         exitButton.fontSize = 45
         exitButton.fontColor = .white
-        exitButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0)
+        exitButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * (topMargin - spacing * 5))
         exitButton.name = "Back"
         exitButton.zPosition = 1
         self.addChild(exitButton)
@@ -118,6 +124,7 @@ class UpgradeMenuScene: SKScene {
         }
     }
 }
+
 
 
 
