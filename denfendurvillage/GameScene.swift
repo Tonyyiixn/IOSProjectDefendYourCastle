@@ -4,6 +4,7 @@
 //  Created by Yixin Chen on 10/12/24.
 //
 
+
 import SpriteKit
 import GameplayKit
 
@@ -22,10 +23,12 @@ class GameScene: SKScene {
     var points: Int = 0
     var pointsLabel: SKLabelNode!
     var lastHealthCheck: CGFloat = 1.0
-    var levelNumber: Int = 1  // Add this property
-    var spawnInterval: TimeInterval = 6.0  // Add this property
+    var levelNumber: Int = 1
+    var spawnInterval: TimeInterval = 6.0
     var levelLabel: SKLabelNode!
-    static var highestLevel: Int = 1  // Add this at the top with other static properties
+    static var highestLevel: Int = 1
+    var baseEnemySpeed: CGFloat = 0.1  // Initial speed
+    var currentEnemySpeed: CGFloat = 0.1  // Current speed that will increase with levels
 
     override func didMove(to view: SKView) {
         GameScene.currentGameScene = self
@@ -75,6 +78,9 @@ class GameScene: SKScene {
         
         // Set background color to test visibility
         self.backgroundColor = .black
+        
+        // Reset enemy speed based on current level
+        currentEnemySpeed = baseEnemySpeed * (1 + CGFloat(levelNumber - 1) * 0.2)
         
         self.startSpawningEnemies()
         addBuildingToScene(imageName: "Fortress Square")
@@ -190,7 +196,7 @@ class GameScene: SKScene {
     func Enemymove() {
         let leftTargetX = self.size.width * 0.40
         let rightTargetX = self.size.width * 0.60
-        let speed: CGFloat = 0.2 // Adjust speed as needed
+        let speed: CGFloat = currentEnemySpeed
         
         for enemy in enemieslist {
             // Determine the target x-position
@@ -272,6 +278,7 @@ class GameScene: SKScene {
         }
    
     func transitionToNextLevel(levelNumber: Int) {
+        increaseEnemySpeed()  // Increase speed before transitioning
         let nextLevelScene = LevelScene(size: self.size)
         nextLevelScene.levelNumber = levelNumber + 1
         nextLevelScene.currentPoints = points  // Pass the current points to the next level
@@ -358,7 +365,12 @@ class GameScene: SKScene {
         zombie.run(sequence)
     }
 
+    func increaseEnemySpeed() {
+        // Increase speed by 10% each level
+        currentEnemySpeed = baseEnemySpeed * (1 + CGFloat(levelNumber - 1) * 0.1)
+    }
 
                
     
 }
+
