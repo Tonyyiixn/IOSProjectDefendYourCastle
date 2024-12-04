@@ -27,8 +27,8 @@ class GameScene: SKScene {
     var spawnInterval: TimeInterval = 6.0
     var levelLabel: SKLabelNode!
     static var highestLevel: Int = 1
-    var baseEnemySpeed: CGFloat = 0.1  // Initial speed
-    var currentEnemySpeed: CGFloat = 0.1  // Current speed that will increase with levels
+    var baseEnemySpeed: CGFloat = 0.2  // Initial speed
+    var currentEnemySpeed: CGFloat = 0.2  // Current speed that will increase with levels
 
     override func didMove(to view: SKView) {
         GameScene.currentGameScene = self
@@ -367,7 +367,7 @@ class GameScene: SKScene {
 
     func increaseEnemySpeed() {
         // Increase speed by 10% each level
-        currentEnemySpeed = baseEnemySpeed * (1 + CGFloat(levelNumber - 1) * 0.1)
+        currentEnemySpeed = baseEnemySpeed * (1 + CGFloat(levelNumber - 1) * 0.2)
     }
 
                
