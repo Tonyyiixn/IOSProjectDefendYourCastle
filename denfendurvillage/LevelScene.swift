@@ -42,7 +42,7 @@ class LevelScene: SKScene {
     func startGameScene() {
         let gameScene = GameScene(size: self.size)
         gameScene.levelNumber = levelNumber
-        gameScene.goal = 5 + (levelNumber - 1) * 5
+        gameScene.goal = 5 + (levelNumber - 1) * 1
         gameScene.spawnInterval = max(1.0, 3.0 - Double(levelNumber - 1) * 0.5)
         gameScene.points = currentPoints
         gameScene.scaleMode = .aspectFill
