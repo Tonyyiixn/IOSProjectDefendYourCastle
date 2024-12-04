@@ -212,25 +212,26 @@ class GameScene: SKScene {
     }
 
     
-    func spawnEnemy(){
+    func spawnEnemy() {
         if gameIsPaused { return }
             
-            let zombie = ZombieSpriteNode(size: CGSize(width: 100, height: 100))
-            let startPointLeft = CGPoint(x: self.size.width * 0.1, y: self.size.height * 0.4)
-            let startPointRight = CGPoint(x: self.size.width * 0.9, y: self.size.height * 0.4)
-            let isLeftSide = Int.random(in: 1...2) == 1
-            
-            // Set the position and orientation based on spawn side
-            zombie.position = isLeftSide ? startPointLeft : startPointRight
-            zombie.xScale = isLeftSide ? -1.0 : 1.0 // Face right if on the left, flip if on the right
-            zombie.name = "enemy"
-            zombie.zPosition = 2
-            self.addChild(zombie)
+        let zombie = ZombieSpriteNode(size: CGSize(width: 100, height: 100))
+        // Move spawn points off screen (using negative x for left side and size.width + buffer for right side)
+        let startPointLeft = CGPoint(x: -50, y: self.size.height * 0.4)  // 50 pixels left of screen
+        let startPointRight = CGPoint(x: self.size.width + 50, y: self.size.height * 0.4)  // 50 pixels right of screen
+        let isLeftSide = Int.random(in: 1...2) == 1
+        
+        // Set the position and orientation based on spawn side
+        zombie.position = isLeftSide ? startPointLeft : startPointRight
+        zombie.xScale = isLeftSide ? -1.0 : 1.0 // Face right if on the left, flip if on the right
+        zombie.name = "enemy"
+        zombie.zPosition = 2
+        self.addChild(zombie)
 
-            enemieslist.append(zombie)
+        enemieslist.append(zombie)
 
-            // Start the walking animation
-            zombie.startWalkingAnimation()
+        // Start the walking animation
+        zombie.startWalkingAnimation()
     }
  
     func moveEnemyHorizontally(enemy: ZombieSpriteNode, targetX: CGFloat, speed: CGFloat) {
