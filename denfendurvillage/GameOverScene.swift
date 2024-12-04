@@ -11,6 +11,8 @@ import AVFoundation
 
 class GameOverScene: SKScene {
     var gameViewController: GameViewController?
+    var finalLevel: Int = 1
+    var highestLevel: Int = 1
     
     override func didMove(to view: SKView) {
         // Create and add the game title
@@ -21,29 +23,43 @@ class GameOverScene: SKScene {
         gameTitle.zPosition = 1
         self.addChild(gameTitle)
         
-        // Create and add the start button
+        // Add final level reached
+        let finalLevelLabel = SKLabelNode(text: "You Reached Level \(finalLevel)")
+        finalLevelLabel.fontSize = 40
+        finalLevelLabel.fontColor = .white
+        finalLevelLabel.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.70)
+        finalLevelLabel.zPosition = 1
+        self.addChild(finalLevelLabel)
+        
+        // Add highest level reached
+        let highestLevelLabel = SKLabelNode(text: "Highest Level: \(highestLevel)")
+        highestLevelLabel.fontSize = 40
+        highestLevelLabel.fontColor = .yellow
+        highestLevelLabel.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.60)
+        highestLevelLabel.zPosition = 1
+        self.addChild(highestLevelLabel)
+        
+        // Rest of your existing buttons, adjusted positions
         let restartButton = SKLabelNode(text: "Restart")
         restartButton.fontSize = 45
         restartButton.fontColor = .white
-        restartButton.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
+        restartButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.45)
         restartButton.name = "restart"
         restartButton.zPosition = 1
         self.addChild(restartButton)
         
-        // Create and add the upgrade button
         let upgradeButton = SKLabelNode(text: "Upgrade")
         upgradeButton.fontSize = 45
         upgradeButton.fontColor = .white
-        upgradeButton.position = CGPoint(x: self.size.width / 2, y: self.size.height*0.3)
+        upgradeButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.35)
         upgradeButton.name = "upgradesystem"
         upgradeButton.zPosition = 1
         self.addChild(upgradeButton)
         
-        // Create and add the exit button
         let backButton = SKLabelNode(text: "Back To Main Menu")
         backButton.fontSize = 45
         backButton.fontColor = .white
-        backButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.1)
+        backButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.25)
         backButton.name = "Back"
         backButton.zPosition = 1
         self.addChild(backButton)
@@ -100,5 +116,3 @@ class GameOverScene: SKScene {
         }
     }
 }
-
-
