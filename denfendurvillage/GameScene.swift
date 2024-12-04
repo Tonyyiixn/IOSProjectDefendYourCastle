@@ -18,11 +18,20 @@ class GameScene: SKScene {
     var healthBarForeground:SKSpriteNode!
     var scoreLabel:SKLabelNode!
     var score: Int = 0
-    var goal: Int = 10
+    var goal: Int = 5  // Changed from 10 to 5
+    var points: Int = 0
+    var pointsLabel: SKLabelNode!
+    var lastHealthCheck: CGFloat = 1.0
+    var levelNumber: Int = 1  // Add this property
+    var spawnInterval: TimeInterval = 6.0  // Add this property
+    var levelLabel: SKLabelNode!
+    static var highestLevel: Int = 1  // Add this at the top with other static properties
+
     override func didMove(to view: SKView) {
         GameScene.currentGameScene = self
         NotificationCenter.default.addObserver(self, selector: #selector(handleResumeGame), name: NSNotification.Name("ResumeGame"), object: nil)
-            //Add the pause button
+        
+        //Add the pause button
         let pausebutton = SKLabelNode(text: "pause")
         pausebutton.setScale(1)
         pausebutton.position = CGPoint(x: self.size.width*0.1, y: self.size.height * 0.9)
@@ -39,7 +48,11 @@ class GameScene: SKScene {
         scoreLabel.fontColor = .black
         scoreLabel.zPosition = 1
         self.addChild(scoreLabel)
-
+        
+        // Initialize points label
+        setupPointsLabel()
+        setupLevelLabel()
+        
         //Health bar background
         healthBarBackground = SKSpriteNode(color: .darkGray, size: CGSize(width:self.size.width*0.4,height:30))
         healthBarBackground.position = CGPoint(x: self.size.width*0.5, y: self.size.height*0.7)
@@ -53,21 +66,54 @@ class GameScene: SKScene {
         healthBarForeground.zPosition = 2
         self.addChild(healthBarForeground)
         
-            // Add the background
-            let background = SKSpriteNode(imageNamed: "Background")
-            background.size = self.size
+        // Add the background
+        let background = SKSpriteNode(imageNamed: "Background")
+        background.size = self.size
         background.position = CGPoint(x: self.size.width / 2, y: self.size.height/2)
-            background.zPosition = 0
-            self.addChild(background)
-            
-            // Set background color to test visibility
-            self.backgroundColor = .black
-            
+        background.zPosition = 0
+        self.addChild(background)
+        
+        // Set background color to test visibility
+        self.backgroundColor = .black
         
         self.startSpawningEnemies()
         addBuildingToScene(imageName: "Fortress Square")
     }
     
+    func setupPointsLabel() {
+        // Remove existing points label if it exists
+        pointsLabel?.removeFromParent()
+        
+        pointsLabel = SKLabelNode(text: "Points: \(points)")
+        pointsLabel.setScale(1)
+        pointsLabel.position = CGPoint(x: self.size.width*0.9, y: self.size.height * 0.85)
+        pointsLabel.fontColor = .black
+        pointsLabel.zPosition = 1
+        self.addChild(pointsLabel)
+    }
+
+    func setupLevelLabel() {
+        // Remove existing level label if it exists
+        levelLabel?.removeFromParent()
+        
+        levelLabel = SKLabelNode(text: "Level: \(levelNumber)")
+        levelLabel.setScale(1)
+        levelLabel.position = CGPoint(x: self.size.width*0.9, y: self.size.height * 0.92)
+        levelLabel.fontColor = .black
+        levelLabel.zPosition = 1
+        self.addChild(levelLabel)
+    }
+
+    
+    func updatePoints(amount: Int) {
+        points += amount
+        // Make sure we're updating the correct label
+        if let label = pointsLabel {
+            label.text = "Points: \(points)"
+        }
+    }
+
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let location = touch.location(in: self)
@@ -90,8 +136,9 @@ class GameScene: SKScene {
     
     @objc func handleResumeGame() {
         gameIsPaused = false
-        
-        }
+        pointsLabel.text = "Points: \(points)"
+        levelLabel.text = "Level: \(levelNumber)"
+    }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
@@ -205,12 +252,15 @@ class GameScene: SKScene {
 
 
     func startSpawningEnemies() {
-            let spawnAction = SKAction.run(spawnEnemy)
-            let waitAction = SKAction.wait(forDuration: 6.0, withRange: 0)
-            let sequence = SKAction.sequence([spawnAction, waitAction])
-            let repeatAction = SKAction.repeatForever(sequence)
-            self.run(repeatAction)
-        }
+        // Remove any existing spawn actions
+        self.removeAction(forKey: "spawnEnemies")
+        
+        let spawnAction = SKAction.run(spawnEnemy)
+        let waitAction = SKAction.wait(forDuration: spawnInterval, withRange: 0)
+        let sequence = SKAction.sequence([spawnAction, waitAction])
+        let repeatAction = SKAction.repeatForever(sequence)
+        self.run(repeatAction, withKey: "spawnEnemies")
+    }
     
     func addBuildingToScene(imageName: String) {
             let building = SKSpriteNode(imageNamed: imageName)
@@ -221,23 +271,16 @@ class GameScene: SKScene {
         }
    
     func transitionToNextLevel(levelNumber: Int) {
-        //addBuildingToScene(imageName: "Fortress Square Full")
-        // Create a new instance of LevelScene and pass the next level number
         let nextLevelScene = LevelScene(size: self.size)
-        nextLevelScene.levelNumber = levelNumber + 1 // Increment the level number for the next scene
+        nextLevelScene.levelNumber = levelNumber + 1
+        nextLevelScene.currentPoints = points  // Pass the current points to the next level
         nextLevelScene.scaleMode = .aspectFill
         self.view?.presentScene(nextLevelScene, transition: SKTransition.fade(withDuration: 1.0))
-        //every time the level rise, the speed of enimes and hitpoints would increase.
-        //speed += 0.1
-        //also, the castle would have more armor.
-        //castleHealth *= 1.5
-        //updateCastleHealthBar()
     }
     
     func checkAndTransitionToNextLevel() {
         if score >= goal {
-            // Transition to the next level scene
-            transitionToNextLevel(levelNumber: 1)
+            transitionToNextLevel(levelNumber: levelNumber)
         }
     }
     
@@ -265,11 +308,23 @@ class GameScene: SKScene {
         if castleHealth <= 0 {
             transitionToGameOver()
         }
+        if (lastHealthCheck - castleHealth) >= 0.2 {
+            lastHealthCheck = castleHealth
+            NotificationCenter.default.post(name: NSNotification.Name("ArcherKilled"), object: nil)
+        }
         updateCastleHealthBar()
     }
     
     func transitionToGameOver() {
+        // Update highest level if current level is higher
+        if levelNumber > GameScene.highestLevel {
+            GameScene.highestLevel = levelNumber
+        }
+        
+        // Present game over scene
         let gameOverScene = GameOverScene(size: size)
+        gameOverScene.finalLevel = levelNumber  // Pass the current level
+        gameOverScene.highestLevel = GameScene.highestLevel  // Pass the highest level
         view?.presentScene(gameOverScene)
     }
     
@@ -292,6 +347,7 @@ class GameScene: SKScene {
                 self.enemieslist.remove(at: index)
             }
             self.score += 1
+            self.updatePoints(amount: 1)
             self.scoreLabel.text = "score:\(self.score)"
             self.checkAndTransitionToNextLevel()
         }
