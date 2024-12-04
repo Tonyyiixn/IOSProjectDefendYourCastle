@@ -106,38 +106,22 @@ class GameScene: SKScene {
                 currentenemy.position.x += amountDraggedX
                 currentenemy.position.y += amountDraggedY
                 
-                // If the enemy is lifted above the ground, trigger falling animation
-                            if currentenemy.position.y > self.size.height * 0.4 {
-                                currentenemy.startFallingAnimation()
-                            }
+                // If the enemy is dragged high enough, signal falling death animation
+                if currentenemy.position.y > self.size.height * 0.7 {
+                    handleZombieDrop(zombie: currentenemy)
+                    self.currentenemy = nil // Reset currentenemy after handling drop
+                }
             }
-            
         }
     }
+
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let currentenemy = currentenemy {
-                // Start the falling animation
-                 currentenemy.startFallingAnimation()
-                 
-                 // Fall action: Move the enemy to the ground level
-                 let fallAction = SKAction.move(to: CGPoint(x: currentenemy.position.x, y: self.size.height * 0.4), duration: 1.5)
-                 
-                 // After falling is done, play the stumble animation
-                 let stumbleAction = SKAction.run {
-                     currentenemy.startStumbleAnimation()
-                     self.dealDamageToZombie(zombie: currentenemy, damage: 0.5)
-                 }
-            
-            
-                             
-                 // Combine fall and stumble actions into a sequence
-            let sequence = SKAction.sequence([fallAction, stumbleAction])
-                 
-                 // Run the sequence (falling first, then stumbling)
-                 currentenemy.run(sequence)
+            // If touchesEnded is triggered, signal the stumble animation
+            currentenemy.startStumbleAnimation()
+            self.currentenemy = nil // Reset currentenemy after stumble animation
         }
-        currentenemy = nil
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -288,5 +272,36 @@ class GameScene: SKScene {
         let gameOverScene = GameOverScene(size: size)
         view?.presentScene(gameOverScene)
     }
-}
+    
+    func handleZombieDrop(zombie: ZombieSpriteNode) {
+        let groundLevel = self.size.height * 0.4
+        let fallDistance = zombie.position.y - groundLevel
+        let fallDuration = TimeInterval(fallDistance / 100) // Adjust for desired speed
+        
+        // Start the falling animation
+        zombie.startFallingAnimation()
+        
+        // Create the fall action
+        let fallAction = SKAction.moveTo(y: groundLevel, duration: fallDuration)
+        
+        // Run the death animation and remove the zombie
+        let deathAction = SKAction.run { zombie.startDeathAnimation() }
+        let removeAction = SKAction.run {
+            zombie.removeFromParent()
+            if let index = self.enemieslist.firstIndex(of: zombie) {
+                self.enemieslist.remove(at: index)
+            }
+            self.score += 1
+            self.scoreLabel.text = "score:\(self.score)"
+            self.checkAndTransitionToNextLevel()
+        }
+        
+        // Combine actions into a sequence
+        let sequence = SKAction.sequence([fallAction, deathAction, SKAction.wait(forDuration: 1.6), removeAction])
+        zombie.run(sequence)
+    }
 
+
+               
+    
+}
