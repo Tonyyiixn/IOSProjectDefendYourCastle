@@ -24,6 +24,15 @@ class UpgradeMenuScene: SKScene {
         gameTitle.zPosition = 1
         self.addChild(gameTitle)
         
+        // Add resume button
+        let resumeButton = SKLabelNode(text: "Resume Game")
+        resumeButton.fontSize = 45
+        resumeButton.fontColor = .white
+        resumeButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.70)
+        resumeButton.name = "resume"
+        resumeButton.zPosition = 1
+        self.addChild(resumeButton)
+        
         // Create and add the start button
         let startButton = SKLabelNode(text: "Add Square")
         startButton.fontSize = 45
@@ -67,7 +76,13 @@ class UpgradeMenuScene: SKScene {
             let location = touch.location(in: self)
             let nodeTouched = self.atPoint(location)
             
-            if nodeTouched.name == "Square" {
+            if nodeTouched.name == "resume" {
+                NotificationCenter.default.post(name: NSNotification.Name("ResumeGame"), object: nil)
+                if let gameScene = GameScene.currentGameScene {
+                    let transition = SKTransition.reveal(with: .up, duration: 1.0)
+                    self.view?.presentScene(gameScene, transition: transition)
+                }
+            } else if nodeTouched.name == "Square" {
                 gameViewController?.gameScene?.addBuildingToScene(imageName: "Fortress Square")
             }else if nodeTouched.name == "Backtowers"{
                 gameViewController?.gameScene?.addBuildingToScene(imageName: "Fortress Square With Back Towers")
@@ -103,5 +118,6 @@ class UpgradeMenuScene: SKScene {
         }
     }
 }
+
 
 
