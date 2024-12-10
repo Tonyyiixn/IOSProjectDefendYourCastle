@@ -92,7 +92,7 @@ class GameScene: SKScene {
         
         pointsLabel = SKLabelNode(text: "Points: \(points)")
         pointsLabel.setScale(1)
-        pointsLabel.position = CGPoint(x: self.size.width*0.51, y: self.size.height * 0.78)
+        pointsLabel.position = CGPoint(x: self.size.width*0.9, y: self.size.height * 0.85)
         pointsLabel.fontColor = .black
         pointsLabel.zPosition = 1
         self.addChild(pointsLabel)
@@ -104,7 +104,7 @@ class GameScene: SKScene {
         
         levelLabel = SKLabelNode(text: "Level: \(levelNumber)")
         levelLabel.setScale(1)
-        levelLabel.position = CGPoint(x: self.size.width*0.66, y: self.size.height * 0.78)
+        levelLabel.position = CGPoint(x: self.size.width*0.9, y: self.size.height * 0.92)
         levelLabel.fontColor = .black
         levelLabel.zPosition = 1
         self.addChild(levelLabel)
