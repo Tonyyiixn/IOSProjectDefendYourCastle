@@ -31,29 +31,29 @@ class StartMenuScene: SKScene {
         self.addChild(startButton)
         
         // Create and add the upgrade button
-        let upgradeButton = SKLabelNode(text: "Upgrade")
-        upgradeButton.fontSize = 45
-        upgradeButton.fontColor = .white
-        upgradeButton.position = CGPoint(x: self.size.width / 2, y: self.size.height*0.40)
-        upgradeButton.name = "upgradesystem"
-        upgradeButton.zPosition = 1
-        self.addChild(upgradeButton)
+//        let upgradeButton = SKLabelNode(text: "Upgrade")
+//        upgradeButton.fontSize = 45
+//        upgradeButton.fontColor = .white
+//        upgradeButton.position = CGPoint(x: self.size.width / 2, y: self.size.height*0.40)
+//        upgradeButton.name = "upgradesystem"
+//        upgradeButton.zPosition = 1
+//        self.addChild(upgradeButton)
         
         // Create and add the settings button
-        let settingsButton = SKLabelNode(text: "Settings")
-        settingsButton.fontSize = 45
-        settingsButton.fontColor = .white
-        settingsButton.position = CGPoint(x: self.size.width / 2, y: self.size.height*0.20)
-        settingsButton.name = "settingsButton"
-        settingsButton.zPosition = 1
-        self.addChild(settingsButton)
+//        let settingsButton = SKLabelNode(text: "Settings")
+//        settingsButton.fontSize = 45
+//        settingsButton.fontColor = .white
+//        settingsButton.position = CGPoint(x: self.size.width / 2, y: self.size.height*0.20)
+//        settingsButton.name = "settingsButton"
+//        settingsButton.zPosition = 1
+//        self.addChild(settingsButton)
         
         
         // Create and add the exit button
         let exitButton = SKLabelNode(text: "Exit")
         exitButton.fontSize = 45
         exitButton.fontColor = .white
-        exitButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0)
+        exitButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.4)
         exitButton.name = "exitButton"
         exitButton.zPosition = 1
         self.addChild(exitButton)
@@ -73,13 +73,15 @@ class StartMenuScene: SKScene {
                 self.view?.presentScene(levelScene, transition: transition)
             } else if nodeTouched.name == "settingsButton" {
                 // Handle settings button tap (add logic here)
-            } else if nodeTouched.name == "upgradesystem" {
-                // Transition to UpgradeMenuScene
-                let upgradeScene = UpgradeMenuScene(size: self.size)
-                upgradeScene.scaleMode = .aspectFill
-                let transition = SKTransition.fade(withDuration: 1.0)
-                self.view?.presentScene(upgradeScene, transition: transition)
-            } else if nodeTouched.name == "exitButton" {
+            }
+//            else if nodeTouched.name == "upgradesystem" {
+//                // Transition to UpgradeMenuScene
+//                let upgradeScene = UpgradeMenuScene(size: self.size)
+//                upgradeScene.scaleMode = .aspectFill
+//                let transition = SKTransition.fade(withDuration: 1.0)
+//                self.view?.presentScene(upgradeScene, transition: transition)
+//            }
+            else if nodeTouched.name == "exitButton" {
                 exit(0)
             }
         }

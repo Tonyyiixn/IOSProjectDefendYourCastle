@@ -44,9 +44,9 @@ class GameScene: SKScene {
         self.addChild(pausebutton)
         
         //Add the score to win
-        scoreLabel = SKLabelNode(text: "score:\(score)")
+        scoreLabel = SKLabelNode(text: "Score:\(score)")
         scoreLabel.setScale(1)
-        scoreLabel.position = CGPoint(x: self.size.width*0.7, y: self.size.height * 0.9)
+        scoreLabel.position = CGPoint(x: self.size.width*0.36, y: self.size.height * 0.78)
         scoreLabel.name = "pauseGame"
         scoreLabel.fontColor = .black
         scoreLabel.zPosition = 1
@@ -58,7 +58,7 @@ class GameScene: SKScene {
         
         //Health bar background
         healthBarBackground = SKSpriteNode(color: .darkGray, size: CGSize(width:self.size.width*0.4,height:30))
-        healthBarBackground.position = CGPoint(x: self.size.width*0.5, y: self.size.height*0.7)
+        healthBarBackground.position = CGPoint(x: self.size.width*0.5, y: self.size.height*0.9)
         healthBarBackground.zPosition = 1
         self.addChild(healthBarBackground)
         
@@ -92,7 +92,7 @@ class GameScene: SKScene {
         
         pointsLabel = SKLabelNode(text: "Points: \(points)")
         pointsLabel.setScale(1)
-        pointsLabel.position = CGPoint(x: self.size.width*0.9, y: self.size.height * 0.85)
+        pointsLabel.position = CGPoint(x: self.size.width*0.51, y: self.size.height * 0.78)
         pointsLabel.fontColor = .black
         pointsLabel.zPosition = 1
         self.addChild(pointsLabel)
@@ -104,7 +104,7 @@ class GameScene: SKScene {
         
         levelLabel = SKLabelNode(text: "Level: \(levelNumber)")
         levelLabel.setScale(1)
-        levelLabel.position = CGPoint(x: self.size.width*0.9, y: self.size.height * 0.92)
+        levelLabel.position = CGPoint(x: self.size.width*0.66, y: self.size.height * 0.78)
         levelLabel.fontColor = .black
         levelLabel.zPosition = 1
         self.addChild(levelLabel)
