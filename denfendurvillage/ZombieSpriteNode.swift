@@ -3,7 +3,7 @@ import SpriteKit
 class ZombieSpriteNode: SKSpriteNode {
     //Attack and health
     var hitpoints:CGFloat = 1.0;
-    var attackPoints:CGFloat = 0.05;
+    var attackPoints:CGFloat = 0.0001;
     // Animation frames
     var walkingFrames: [SKTexture] = []
     var attackFrames: [SKTexture] = []
