@@ -194,8 +194,8 @@ class GameScene: SKScene {
     }
     
     func Enemymove() {
-        let leftTargetX = self.size.width * 0.40
-        let rightTargetX = self.size.width * 0.60
+        let leftTargetX = self.size.width * 0.35
+        let rightTargetX = self.size.width * 0.65
         let speed: CGFloat = currentEnemySpeed
         
         for enemy in enemieslist {
@@ -210,10 +210,11 @@ class GameScene: SKScene {
                 enemy.startWalkingAnimation()
             }
             
-            if abs(enemy.position.x - targetX) < 2 {
-                            enemy.startAttackAnimation() // Start attack animation once the enemy reaches the target
-                            dealDamageToCastle(damage: enemy.attackPoints)
-                    }
+            if abs(enemy.position.x - targetX) < 1 {
+//                enemy.startAttackAnimation() // Start attack animation once the enemy reaches the target
+//                dealDamageToCastle(damage: enemy.attackPoints)
+                handleZommbieAttack(zombie: enemy)
+                }
         }
     }
 
@@ -364,7 +365,13 @@ class GameScene: SKScene {
         let sequence = SKAction.sequence([fallAction, deathAction, SKAction.wait(forDuration: 1.6), removeAction])
         zombie.run(sequence)
     }
-
+    
+    func handleZommbieAttack(zombie: ZombieSpriteNode) {
+        let attackAction = SKAction.run{zombie.startAttackAnimation()}
+        let dmg = SKAction.run{self.dealDamageToCastle(damage: zombie.attackPoints)}
+        let sequence = SKAction.sequence([attackAction,dmg])
+        zombie.run(sequence)
+        }
     func increaseEnemySpeed() {
         // Increase speed by 10% each level
         currentEnemySpeed = baseEnemySpeed * (1 + CGFloat(levelNumber - 1) * 0.2)
