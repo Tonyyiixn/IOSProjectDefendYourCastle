@@ -375,6 +375,7 @@ class GameScene: SKScene {
     func increaseEnemySpeed() {
         // Increase speed by 10% each level
         currentEnemySpeed = baseEnemySpeed * (1 + CGFloat(levelNumber - 1) * 0.2)
+        //you can increase the attackpoint for zombies here.
     }
 
                
