@@ -3,7 +3,7 @@ import SpriteKit
 class ZombieSpriteNode: SKSpriteNode {
     //Attack and health
     var hitpoints:CGFloat = 1.0;
-    var attackPoints:CGFloat = 0.0001;
+    var attackPoints:CGFloat = 0.01;
     // Animation frames
     var walkingFrames: [SKTexture] = []
     var attackFrames: [SKTexture] = []
@@ -11,7 +11,7 @@ class ZombieSpriteNode: SKSpriteNode {
     var stumbleFrames: [SKTexture] = []
     var fallingFrames: [SKTexture] = []
     var transitionFrames: [SKTexture] = []
-
+    var isWalking = false
     // Initialize the zombie
     init(size: CGSize) {
         // Load the first texture for initialization
@@ -50,6 +50,7 @@ class ZombieSpriteNode: SKSpriteNode {
 extension ZombieSpriteNode {
     // Play the walking animation
     func startWalkingAnimation() {
+        isWalking = true
         let walkAnimation = SKAction.animate(with: walkingFrames, timePerFrame: 0.1)
         let repeatWalk = SKAction.repeatForever(walkAnimation)
         self.run(repeatWalk)
@@ -57,6 +58,7 @@ extension ZombieSpriteNode {
 
     // Play the attack animation
     func startAttackAnimation() {
+        isWalking = false
         let attackAnimation = SKAction.animate(with: attackFrames, timePerFrame: 0.15)
         let repeatAttack = SKAction.repeatForever(attackAnimation)
         self.run(repeatAttack)
@@ -64,6 +66,7 @@ extension ZombieSpriteNode {
 
     // Play the death animation
     func startDeathAnimation() {
+        isWalking = false
         let deathAnimation = SKAction.animate(with: deathFrames, timePerFrame: 0.1)
         let removeAfterDeath = SKAction.sequence([deathAnimation, .removeFromParent()])
         self.run(removeAfterDeath)
@@ -71,18 +74,21 @@ extension ZombieSpriteNode {
 
     // Play the falling animation
     func startFallingAnimation() {
+        isWalking = false
         let fallingAnimation = SKAction.animate(with: fallingFrames, timePerFrame: 0.1)
         self.run(fallingAnimation)
     }
     
     // Play the stumble animation
     func startStumbleAnimation() {
+        isWalking = false
         let stubmbleAnimation = SKAction.animate(with: stumbleFrames, timePerFrame: 0.1)
         self.run(stubmbleAnimation)
     }
     
     // Play the transition animation
     func startTransitionAnimation() {
+        isWalking = false
         let transitionAnimation = SKAction.animate(with: transitionFrames, timePerFrame: 0.1)
         self.run(transitionAnimation)
     }
