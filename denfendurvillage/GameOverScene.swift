@@ -48,13 +48,13 @@ class GameOverScene: SKScene {
         restartButton.zPosition = 1
         self.addChild(restartButton)
         
-        let upgradeButton = SKLabelNode(text: "Upgrade")
-        upgradeButton.fontSize = 45
-        upgradeButton.fontColor = .white
-        upgradeButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.35)
-        upgradeButton.name = "upgradesystem"
-        upgradeButton.zPosition = 1
-        self.addChild(upgradeButton)
+//        let upgradeButton = SKLabelNode(text: "Upgrade")
+//        upgradeButton.fontSize = 45
+//        upgradeButton.fontColor = .white
+//        upgradeButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.35)
+//        upgradeButton.name = "upgradesystem"
+//        upgradeButton.zPosition = 1
+//        self.addChild(upgradeButton)
         
         let backButton = SKLabelNode(text: "Back To Main Menu")
         backButton.fontSize = 45
@@ -75,12 +75,13 @@ class GameOverScene: SKScene {
                 gameScene.scaleMode = .aspectFill
                 let transition = SKTransition.fade(withDuration: 1.0)
                 self.view?.presentScene(gameScene, transition: transition)
-            }else if nodeTouched.name == "upgradesystem"{
-                let upgradeScene = UpgradeMenuScene(size: self.size)
-                upgradeScene.scaleMode = .aspectFill
-                let transition = SKTransition.fade(withDuration: 1.0)
-                self.view?.presentScene(upgradeScene, transition: transition)
             }
+//            else if nodeTouched.name == "upgradesystem"{
+//                let upgradeScene = UpgradeMenuScene(size: self.size)
+//                upgradeScene.scaleMode = .aspectFill
+//                let transition = SKTransition.fade(withDuration: 1.0)
+//                self.view?.presentScene(upgradeScene, transition: transition)
+//            }
             else if nodeTouched.name == "Back" {
                 let BackScene = StartMenuScene(size: self.size)
                 BackScene.scaleMode = .aspectFill

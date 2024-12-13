@@ -26,6 +26,7 @@ class GameScene: SKScene {
     var levelNumber: Int = 1
     var spawnInterval: TimeInterval = 6.0
     var levelLabel: SKLabelNode!
+    var CastleLabel: SKLabelNode!//for testing the castle health
     static var highestLevel: Int = 1
     var baseEnemySpeed: CGFloat = 0.2  // Initial speed
     var currentEnemySpeed: CGFloat = 0.2  // Current speed that will increase with levels
@@ -55,6 +56,7 @@ class GameScene: SKScene {
         // Initialize points label
         setupPointsLabel()
         setupLevelLabel()
+        setupCastleHealth()
         
         //Health bar background
         healthBarBackground = SKSpriteNode(color: .darkGray, size: CGSize(width:self.size.width*0.4,height:30))
@@ -63,7 +65,7 @@ class GameScene: SKScene {
         self.addChild(healthBarBackground)
         
         //Health bar background
-        healthBarForeground = SKSpriteNode(color: .red, size: CGSize(width:self.size.width*0.4,height:30))
+        healthBarForeground = SKSpriteNode(color: .red, size: CGSize(width:self.size.width*0.4*castleHealth,height:30))
         healthBarForeground.anchorPoint = CGPoint(x: 0, y: 0.5)
         healthBarForeground.position = CGPoint(x: healthBarBackground.position.x - healthBarBackground.size.width / 2, y: healthBarBackground.position.y)
         healthBarForeground.zPosition = 2
@@ -108,6 +110,18 @@ class GameScene: SKScene {
         levelLabel.fontColor = .black
         levelLabel.zPosition = 1
         self.addChild(levelLabel)
+    }
+
+    func setupCastleHealth() {
+        // Remove existing level label if it exists
+        CastleLabel?.removeFromParent()
+        
+        CastleLabel = SKLabelNode(text: "heath: \(castleHealth)")
+        CastleLabel.setScale(1)
+        CastleLabel.position = CGPoint(x: self.size.width*0.9, y: self.size.height * 0.7)
+        CastleLabel.fontColor = .black
+        CastleLabel.zPosition = 1
+        self.addChild(CastleLabel)
     }
 
     
@@ -180,6 +194,7 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         if gameIsPaused {
                     // Prevent all actions from progressing while the game is paused
+                    healthBarForeground.removeFromParent()
                     self.removeAllActions()
                     for enemy in enemieslist {
                         enemy.removeAllActions()
@@ -211,9 +226,9 @@ class GameScene: SKScene {
             }
             
             if abs(enemy.position.x - targetX) < 1 {
-//                enemy.startAttackAnimation() // Start attack animation once the enemy reaches the target
-//                dealDamageToCastle(damage: enemy.attackPoints)
-                handleZommbieAttack(zombie: enemy)
+                enemy.startAttackAnimation() // Start attack animation once the enemy reaches the target
+                dealDamageToCastle(damage: enemy.attackPoints)
+              //  handleZommbieAttack(zombie: enemy)
                 }
         }
     }
@@ -314,6 +329,7 @@ class GameScene: SKScene {
     
     func dealDamageToCastle(damage: CGFloat) {
         castleHealth -= damage
+        CastleLabel.text = "Castle Health:\(castleHealth)"
         if castleHealth <= 0 {
             transitionToGameOver()
         }
