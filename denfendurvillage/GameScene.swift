@@ -56,7 +56,7 @@ class GameScene: SKScene {
         // Initialize points label
         setupPointsLabel()
         setupLevelLabel()
-        //setupCastleHealth() //used for testing castle health bar
+       // setupCastleHealth() //used for testing castle health bar
         
         //Health bar background
         healthBarBackground = SKSpriteNode(color: .darkGray, size: CGSize(width:self.size.width*0.4,height:30))
@@ -225,10 +225,17 @@ class GameScene: SKScene {
                 enemy.startWalkingAnimation()
             }
             
-            if abs(enemy.position.x - targetX) < 1 {
-                enemy.startAttackAnimation() // Start attack animation once the enemy reaches the target
-                dealDamageToCastle(damage: enemy.attackPoints)
-              //  handleZommbieAttack(zombie: enemy)
+            if abs(enemy.position.x - targetX) < 1 && enemy.isWalking == true {
+                    //dealDamageToCastle(damage: enemy.attackPoints)
+                    enemy.startAttackAnimation() // Start attack animation once the enemy reaches the target
+                let attackAction = SKAction.repeatForever(SKAction.sequence([
+                                SKAction.run { [weak self] in
+                                    self?.dealDamageToCastle(damage: enemy.attackPoints)
+                                },
+                                SKAction.wait(forDuration: 0.5) // Damage interval
+                            ]))
+                            enemy.run(attackAction)
+//              handleZommbieAttack(zombie: enemy)
                 }
         }
     }
@@ -329,7 +336,7 @@ class GameScene: SKScene {
     
     func dealDamageToCastle(damage: CGFloat) {
         castleHealth -= damage
-        //CastleLabel.text = "Castle Health:\(castleHealth)" //this code is for testing castle health
+       // CastleLabel.text = "Castle Health:\(castleHealth)" //this code is for testing castle health
         if castleHealth <= 0 {
             transitionToGameOver()
         }
