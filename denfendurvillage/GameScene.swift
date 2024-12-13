@@ -56,7 +56,7 @@ class GameScene: SKScene {
         // Initialize points label
         setupPointsLabel()
         setupLevelLabel()
-        setupCastleHealth()
+        //setupCastleHealth() //used for testing castle health bar
         
         //Health bar background
         healthBarBackground = SKSpriteNode(color: .darkGray, size: CGSize(width:self.size.width*0.4,height:30))
@@ -112,13 +112,13 @@ class GameScene: SKScene {
         self.addChild(levelLabel)
     }
 
-    func setupCastleHealth() {
+    func setupCastleHealth() {//this code is for testing castle health
         // Remove existing level label if it exists
         CastleLabel?.removeFromParent()
         
-        CastleLabel = SKLabelNode(text: "heath: \(castleHealth)")
+        CastleLabel = SKLabelNode(text: "Castle Health: \(castleHealth)")
         CastleLabel.setScale(1)
-        CastleLabel.position = CGPoint(x: self.size.width*0.9, y: self.size.height * 0.7)
+        CastleLabel.position = CGPoint(x: self.size.width*0.36, y: self.size.height * 0.68)
         CastleLabel.fontColor = .black
         CastleLabel.zPosition = 1
         self.addChild(CastleLabel)
@@ -329,7 +329,7 @@ class GameScene: SKScene {
     
     func dealDamageToCastle(damage: CGFloat) {
         castleHealth -= damage
-        CastleLabel.text = "Castle Health:\(castleHealth)"
+        //CastleLabel.text = "Castle Health:\(castleHealth)" //this code is for testing castle health
         if castleHealth <= 0 {
             transitionToGameOver()
         }
