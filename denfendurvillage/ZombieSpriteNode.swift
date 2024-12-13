@@ -12,6 +12,8 @@ class ZombieSpriteNode: SKSpriteNode {
     var fallingFrames: [SKTexture] = []
     var transitionFrames: [SKTexture] = []
     var isWalking = false
+    var isStumbling = false
+    var slowdown = 0.1
     // Initialize the zombie
     init(size: CGSize) {
         // Load the first texture for initialization
@@ -51,6 +53,7 @@ extension ZombieSpriteNode {
     // Play the walking animation
     func startWalkingAnimation() {
         isWalking = true
+        isStumbling = false
         let walkAnimation = SKAction.animate(with: walkingFrames, timePerFrame: 0.1)
         let repeatWalk = SKAction.repeatForever(walkAnimation)
         self.run(repeatWalk)
@@ -59,6 +62,7 @@ extension ZombieSpriteNode {
     // Play the attack animation
     func startAttackAnimation() {
         isWalking = false
+        isStumbling = false
         let attackAnimation = SKAction.animate(with: attackFrames, timePerFrame: 0.15)
         let repeatAttack = SKAction.repeatForever(attackAnimation)
         self.run(repeatAttack)
@@ -67,6 +71,7 @@ extension ZombieSpriteNode {
     // Play the death animation
     func startDeathAnimation() {
         isWalking = false
+        isStumbling = false
         let deathAnimation = SKAction.animate(with: deathFrames, timePerFrame: 0.1)
         let removeAfterDeath = SKAction.sequence([deathAnimation, .removeFromParent()])
         self.run(removeAfterDeath)
@@ -75,6 +80,7 @@ extension ZombieSpriteNode {
     // Play the falling animation
     func startFallingAnimation() {
         isWalking = false
+        isStumbling = false
         let fallingAnimation = SKAction.animate(with: fallingFrames, timePerFrame: 0.1)
         self.run(fallingAnimation)
     }
@@ -82,6 +88,7 @@ extension ZombieSpriteNode {
     // Play the stumble animation
     func startStumbleAnimation() {
         isWalking = false
+        isStumbling = true
         let stubmbleAnimation = SKAction.animate(with: stumbleFrames, timePerFrame: 0.1)
         self.run(stubmbleAnimation)
     }
@@ -89,6 +96,7 @@ extension ZombieSpriteNode {
     // Play the transition animation
     func startTransitionAnimation() {
         isWalking = false
+        isStumbling = false
         let transitionAnimation = SKAction.animate(with: transitionFrames, timePerFrame: 0.1)
         self.run(transitionAnimation)
     }
