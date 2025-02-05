@@ -89,11 +89,13 @@ class UpgradeMenuScene: SKScene {
                     self.view?.presentScene(gameScene, transition: transition)
                 }
             } else if nodeTouched.name == "Square" {
-                gameViewController?.gameScene?.addBuildingToScene(imageName: "Fortress Square")
+                NotificationCenter.default.post(name: NSNotification.Name("Fortress Square Full"), object: nil)
             }else if nodeTouched.name == "Backtowers"{
-                gameViewController?.gameScene?.addBuildingToScene(imageName: "Fortress Square With Back Towers")
+                NotificationCenter.default.post(name: NSNotification.Name("Fortress Square With Back Towers"), object: nil)
+                print("success")
             }else if nodeTouched.name == "Fronttowers"{
-                gameViewController?.gameScene?.addBuildingToScene(imageName: "Front Towers")
+                NotificationCenter.default.post(name: NSNotification.Name("Front Towers"), object: nil)
+                print("success")
             }
             else if nodeTouched.name == "Back" {
                 let BackScene = StartMenuScene(size: self.size)

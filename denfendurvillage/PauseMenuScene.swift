@@ -37,19 +37,19 @@ class PauseMenuScene: SKScene {
         self.addChild(restartButton)
         
         // Create and add the upgrade button
-//        let upgradeButton = SKLabelNode(text: "Upgrade")
-//        upgradeButton.fontSize = 45
-//        upgradeButton.fontColor = .white
-//        upgradeButton.position = CGPoint(x: self.size.width / 2, y: self.size.height*0.3)
-//        upgradeButton.name = "upgradesystem"
-//        upgradeButton.zPosition = 1
-//        self.addChild(upgradeButton)
+        let upgradeButton = SKLabelNode(text: "Upgrade")
+        upgradeButton.fontSize = 45
+        upgradeButton.fontColor = .white
+        upgradeButton.position = CGPoint(x: self.size.width / 2, y: self.size.height*0.3)
+        upgradeButton.name = "upgradesystem"
+        upgradeButton.zPosition = 1
+        self.addChild(upgradeButton)
         
         // Create and add the exit button
         let backButton = SKLabelNode(text: "Back To Main Menu")
         backButton.fontSize = 45
         backButton.fontColor = .white
-        backButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.3)
+        backButton.position = CGPoint(x: self.size.width / 2, y: self.size.height * 0.1)
         backButton.name = "Back"
         backButton.zPosition = 1
         self.addChild(backButton)
@@ -66,12 +66,12 @@ class PauseMenuScene: SKScene {
                 let transition = SKTransition.fade(withDuration: 1.0)
                 self.view?.presentScene(gameScene, transition: transition)
             }
-//            else if nodeTouched.name == "upgradesystem"{
-//                let upgradeScene = UpgradeMenuScene(size: self.size)
-//                upgradeScene.scaleMode = .aspectFill
-//                let transition = SKTransition.fade(withDuration: 1.0)
-//                self.view?.presentScene(upgradeScene, transition: transition)
-//            }
+            else if nodeTouched.name == "upgradesystem"{
+                let upgradeScene = UpgradeMenuScene(size: self.size)
+                upgradeScene.scaleMode = .aspectFill
+                let transition = SKTransition.fade(withDuration: 1.0)
+                self.view?.presentScene(upgradeScene, transition: transition)
+            }
             else if nodeTouched.name == "Back" {
                 let BackScene = StartMenuScene(size: self.size)
                 BackScene.scaleMode = .aspectFill

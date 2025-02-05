@@ -34,6 +34,9 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         GameScene.currentGameScene = self
         NotificationCenter.default.addObserver(self, selector: #selector(handleResumeGame), name: NSNotification.Name("ResumeGame"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleBuildingUpgradeFortressSquareFull), name: NSNotification.Name("Fortress Square Full"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleBuildingUpgradeFortressSquareWithBackTowers), name: NSNotification.Name("Fortress Square With Back Towers"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleBuildingUpgradeFrontTowers), name: NSNotification.Name("Front Towers"), object: nil)
         
         //Add the pause button
         let pausebutton = SKLabelNode(text: "pause")
@@ -160,6 +163,22 @@ class GameScene: SKScene {
         levelLabel.text = "Level: \(levelNumber)"
     }
     
+    @objc func handleBuildingUpgradeFortressSquareFull() {
+        addBuildingToScene(imageName: "Fortress Square Full")
+    }
+    
+    @objc func handleBuildingUpgradeFortressSquareWithBackTowers() {
+        addBuildingToScene(imageName: "Fortress Square With Back Towers")
+    }
+
+    @objc func handleBuildingUpgradeFrontTowers() {
+        let building = SKSpriteNode(imageNamed: "Front Towers")
+        building.position = CGPoint(x: self.size.width * 0.5, y: self.size.height * 0.2)
+        building.setScale(0.4)
+        building.zPosition = 4
+        self.addChild(building)
+    }
+
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             let pointOfTouch = touch.location(in: self)
