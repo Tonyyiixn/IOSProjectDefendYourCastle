@@ -164,7 +164,11 @@ class GameScene: SKScene {
     }
     
     @objc func handleBuildingUpgradeFortressSquareFull() {
-        addBuildingToScene(imageName: "Fortress Square Full")
+        let building = SKSpriteNode(imageNamed: "Fortress Square Full")
+        building.position = CGPoint(x: self.size.width * 0.5, y: self.size.height * 0.4)
+        building.setScale(0.4)
+        building.zPosition = 5
+        self.addChild(building)
     }
     
     @objc func handleBuildingUpgradeFortressSquareWithBackTowers() {
