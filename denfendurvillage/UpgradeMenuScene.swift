@@ -90,11 +90,29 @@ class UpgradeMenuScene: SKScene {
                 }
             } else if nodeTouched.name == "Square" {
                 NotificationCenter.default.post(name: NSNotification.Name("Fortress Square Full"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name("ResumeGame"), object: nil)
+                if let gameScene = GameScene.currentGameScene {
+                    let transition = SKTransition.reveal(with: .up, duration: 1.0)
+                    gameScene.addBuildingToScene(imageName: "Fortress Square Full")
+                    self.view?.presentScene(gameScene, transition: transition)
+                }
             }else if nodeTouched.name == "Backtowers"{
                 NotificationCenter.default.post(name: NSNotification.Name("Fortress Square With Back Towers"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name("ResumeGame"), object: nil)
+                if let gameScene = GameScene.currentGameScene {
+                    let transition = SKTransition.reveal(with: .up, duration: 1.0)
+                    gameScene.addBuildingToScene(imageName: "Fortress Square With Back Towers")
+                    self.view?.presentScene(gameScene, transition: transition)
+                }
                 print("success")
             }else if nodeTouched.name == "Fronttowers"{
                 NotificationCenter.default.post(name: NSNotification.Name("Front Towers"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name("ResumeGame"), object: nil)
+                if let gameScene = GameScene.currentGameScene {
+                    let transition = SKTransition.reveal(with: .up, duration: 1.0)
+                    gameScene.addBuildingToScene(imageName: "Fortress Square With Back Towers")
+                    self.view?.presentScene(gameScene, transition: transition)
+                }
                 print("success")
             }
             else if nodeTouched.name == "Back" {
